@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const qrcode = require("qrcode");
 
 app.use("/assets", express.static(__dirname + "/client/assets"));
@@ -134,32 +134,28 @@ async function connectToWhatsApp() {
   sock.ev.on("messages.upsert", async ({ messages, type }) => {
     //console.log(messages);
     if (type === "notify") {
-      if (!messages[0].key.fromMe) {
-        //tentukan jenis pesan berbentuk text
-        const pesan = messages[0].message.conversation;
-
-        //nowa dari pengirim pesan sebagai id
-        const noWa = messages[0].key.remoteJid;
-
-        await sock.readMessages([messages[0].key]);
-
-        //kecilkan semua pesan yang masuk lowercase
-        const pesanMasuk = pesan.toLowerCase();
-
-        if (!messages[0].key.fromMe && pesanMasuk === "ping") {
-          await sock.sendMessage(
-            noWa,
-            { text: "Pong" },
-            { quoted: messages[0] }
-          );
-        } else {
-          await sock.sendMessage(
-            noWa,
-            { text: "Saya adalah Bot!" },
-            { quoted: messages[0] }
-          );
-        }
-      }
+      // if (!messages[0].key.fromMe) {
+      //   //tentukan jenis pesan berbentuk text
+      //   const pesan = messages[0].message.conversation;
+      //   //nowa dari pengirim pesan sebagai id
+      //   const noWa = messages[0].key.remoteJid;
+      //   await sock.readMessages([messages[0].key]);
+      //   //kecilkan semua pesan yang masuk lowercase
+      //   const pesanMasuk = pesan.toLowerCase();
+      //   if (!messages[0].key.fromMe && pesanMasuk === "ping") {
+      //     await sock.sendMessage(
+      //       noWa,
+      //       { text: "Pong" },
+      //       { quoted: messages[0] }
+      //     );
+      //   } else {
+      //     await sock.sendMessage(
+      //       noWa,
+      //       { text: "Saya adalah Bot!" },
+      //       { quoted: messages[0] }
+      //     );
+      //   }
+      // }
     }
   });
 }
